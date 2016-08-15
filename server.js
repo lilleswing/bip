@@ -5,6 +5,7 @@ var mongodb = require("mongodb");
 var ObjectID = mongodb.ObjectID;
 
 var CONTACTS_COLLECTION = "contacts";
+var WEEK = 3;
 
 var app = express();
 app.use(express.static(__dirname + "/public"));
@@ -38,6 +39,12 @@ function handleError(res, reason, message, code) {
     console.log("ERROR: " + reason);
     res.status(code || 500).json({"error": message});
 }
+
+app.get("/about", function (req, res) {
+    res.status(200).json({
+        "week": WEEK
+    });
+});
 
 /*  "/contacts"
  *    GET: finds all contacts

@@ -6,32 +6,12 @@
 <div class="container">
   <div>
     <p>
-      <label>First Name (required)</label> 
-      <input id="name" class="form-control" type="text" ng-model="contact.firstName" required> 
+      <label>Name</label>
+      <input id="name" class="form-control" type="text" ng-model="contact.name" required>
     </p>
     <p>
-      <label>Last Name (required)</label> 
-      <input id="name" class="form-control" type="text" ng-model="contact.lastName" required> 
-    </p>
-    <p>
-      <label>Email (required)</label> 
-      <input id="name" class="form-control" type="text" ng-model="contact.email" required> 
-    </p>
-    <p>
-      <label>Phone (Mobile)</label> 
-      <input id="name" class="form-control" type="text" ng-model="contact.phone.mobile"> 
-    </p>
-    <p>
-      <label>Phone (Work)</label> 
-      <input id="name" class="form-control" type="text" ng-model="contact.phone.work"> 
-    </p>
-    <p>
-      <label>Address</label> 
-      <input id="name" class="form-control" type="text" ng-model="contact.address"> 
-    </p>
-    <p>
-      <label>Twitter Handle</label> 
-      <input id="name" class="form-control" type="text" ng-model="contact.twitter"> 
+      <label>Image</label>
+      <input id="img" class="form-control" type="text" ng-model="contact.img" required>
     </p>
     <p>
       <button style="margin-top:20px" class="btn btn-default" ng-click="saveContact(contact)">Save</button>

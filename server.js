@@ -5,6 +5,7 @@ var mongodb = require("mongodb");
 var ObjectID = mongodb.ObjectID;
 
 var CONTACTS_COLLECTION = "contacts";
+var TEAMS_COLLECTION = "teams";
 var WEEK = 3;
 
 var app = express();
@@ -32,7 +33,6 @@ mongodb.MongoClient.connect(process.env.MONGODB_URI, function (err, database) {
     });
 });
 
-// CONTACTS API ROUTES BELOW
 
 // Generic error handler used by all endpoints.
 function handleError(res, reason, message, code) {
@@ -46,6 +46,76 @@ app.get("/about", function (req, res) {
     });
 });
 
+// TEAMS API below
+/*  "/teams"
+ *    GET: finds all contacts
+ *    POST: creates a new contact
+ */
+
+app.get("/teams", function (req, res) {
+    db.collection(TEAMS_COLLECTION).find({}).toArray(function (err, docs) {
+        if (err) {
+            handleError(res, err.message, "Failed to get teams.");
+        } else {
+            res.status(200).json(docs);
+        }
+    });
+});
+
+app.post("/teams", function (req, res) {
+    var newTeam = req.body;
+    newTeam.createDate = new Date();
+
+    db.collection(TEAMS_COLLECTION).insertOne(newTeam, function (err, doc) {
+        if (err) {
+            handleError(res, err.message, "Failed to create new team.");
+        } else {
+            res.status(201).json(doc.ops[0]);
+        }
+    });
+});
+
+/*  "/teams/:id"
+ *    GET: find team by id
+ *    PUT: update team by id
+ *    DELETE: deletes team by id
+ */
+
+app.get("/teams/:id", function (req, res) {
+    db.collection(TEAMS_COLLECTION).findOne({_id: new ObjectID(req.params.id)}, function (err, doc) {
+        if (err) {
+            handleError(res, err.message, "Failed to get team");
+        } else {
+            res.status(200).json(doc);
+        }
+    });
+});
+
+app.put("/teams/:id", function (req, res) {
+    var updateDoc = req.body;
+    delete updateDoc._id;
+
+    db.collection(TEAMS_COLLECTION).updateOne({_id: new ObjectID(req.params.id)}, updateDoc, function (err, doc) {
+        if (err) {
+            handleError(res, err.message, "Failed to update team");
+        } else {
+            res.status(204).end();
+        }
+    });
+});
+
+app.delete("/teams/:id", function (req, res) {
+    db.collection(TEAMS_COLLECTION).deleteOne({_id: new ObjectID(req.params.id)}, function (err, result) {
+        if (err) {
+            handleError(res, err.message, "Failed to delete team");
+        } else {
+            res.status(204).end();
+        }
+    });
+});
+
+
+// CONTACTS API ROUTES BELOW
 /*  "/contacts"
  *    GET: finds all contacts
  *    POST: creates a new contact

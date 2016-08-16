@@ -44,7 +44,8 @@ function handleError(res, reason, message, code) {
 
 app.get("/about", function (req, res) {
     res.status(200).json({
-        "week": WEEK
+        "last_week": WEEK - 1,
+        "this_week": WEEK
     });
 });
 
@@ -279,7 +280,7 @@ app.post("/events", function (req, res) {
     newEvent.createDate = n = new Date("8-8-16 9:00");
     newEvent.week = WEEK;
 
-    db.collection(EVENT_TYPES_COLLECTION).insertOne(newEvent, function (err, doc) {
+    db.collection(EVENTS_COLLECTION).insertOne(newEvent, function (err, doc) {
         if (err) {
             handleError(res, err.message, "Failed to create new event.");
         } else {

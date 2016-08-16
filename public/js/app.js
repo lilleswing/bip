@@ -80,6 +80,22 @@ angular.module("contactsApp", ['ngRoute'])
             });
         }
     })
+    .service("Events", function ($http) {
+        this.getEvents = function () {
+            return $http.get("/events").then(function (response) {
+                return response;
+            }, function (response) {
+                alert("Error finding contacts.");
+            });
+        };
+        this.createEvent = function (event) {
+            return $http.post("/events", event).then(function (response) {
+                return response;
+            }, function (response) {
+                alert("Error creating contact.");
+            });
+        };
+    })
     .service("About", function ($http) {
         this.getAbout = function () {
             return $http.get("/about").then(function (response) {
@@ -101,7 +117,7 @@ angular.module("contactsApp", ['ngRoute'])
     .controller("ListController", function (contacts, $scope) {
         $scope.contacts = contacts.data;
     })
-    .controller("ScoreboardController", function (contacts, event_types, $scope) {
+    .controller("ScoreboardController", function (contacts, event_types, $scope, Events) {
         $scope.contacts = contacts.data;
         $scope.event_types = event_types.data;
         $scope.showevents = false;
@@ -114,6 +130,10 @@ angular.module("contactsApp", ['ngRoute'])
         $scope.scoreEvent = function (eventTypeId) {
             $scope.eventTypeId = eventTypeId;
             $scope.showevents = false;
+            Events.createEvent({
+                "contact": $scope.contact,
+                "event_type": $scope.eventTypeId
+            });
         };
     })
     .controller("NewContactController", function ($scope, $location, Contacts) {

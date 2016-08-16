@@ -8,7 +8,7 @@ var CONTACTS_COLLECTION = "contacts";
 var TEAMS_COLLECTION = "teams";
 var EVENTS_COLLECTION = "events";
 var EVENT_TYPES_COLLECTION = "event_types";
-var WEEK = 3;
+var WEEK = 2;
 
 var app = express();
 app.use(express.static(__dirname + "/public"));
@@ -254,6 +254,36 @@ app.delete("/event_types/:id", function (req, res) {
             handleError(res, err.message, "Failed to delete contact");
         } else {
             res.status(204).end();
+        }
+    });
+});
+
+// Event Routes
+/*  "/contacts"
+ *    GET: finds all contacts
+ *    POST: creates a new contact
+ */
+
+app.get("/events", function (req, res) {
+    db.collection(EVENTS_COLLECTION).find({}).toArray(function (err, docs) {
+        if (err) {
+            handleError(res, err.message, "Failed to get contacts.");
+        } else {
+            res.status(200).json(docs);
+        }
+    });
+});
+
+app.post("/events", function (req, res) {
+    var newEvent = req.body;
+    newEvent.createDate = n = new Date("8-8-16 9:00");
+    newEvent.week = WEEK;
+
+    db.collection(EVENT_TYPES_COLLECTION).insertOne(newEvent, function (err, doc) {
+        if (err) {
+            handleError(res, err.message, "Failed to create new event.");
+        } else {
+            res.status(201).json(doc.ops[0]);
         }
     });
 });

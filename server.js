@@ -277,7 +277,7 @@ app.get("/events", function (req, res) {
 
 app.post("/events", function (req, res) {
     var newEvent = req.body;
-    newEvent.createDate = n = new Date("8-8-16 9:00");
+    newEvent.createDate = new Date();
     newEvent.week = WEEK;
 
     db.collection(EVENTS_COLLECTION).insertOne(newEvent, function (err, doc) {

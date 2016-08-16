@@ -6,6 +6,8 @@ var ObjectID = mongodb.ObjectID;
 
 var CONTACTS_COLLECTION = "contacts";
 var TEAMS_COLLECTION = "teams";
+var EVENTS_COLLECTION = "events";
+var EVENT_TYPES_COLLECTION = "event_types";
 var WEEK = 3;
 
 var app = express();
@@ -179,6 +181,75 @@ app.put("/contacts/:id", function (req, res) {
 
 app.delete("/contacts/:id", function (req, res) {
     db.collection(CONTACTS_COLLECTION).deleteOne({_id: new ObjectID(req.params.id)}, function (err, result) {
+        if (err) {
+            handleError(res, err.message, "Failed to delete contact");
+        } else {
+            res.status(204).end();
+        }
+    });
+});
+
+// Events Routes
+/*  "/contacts"
+ *    GET: finds all contacts
+ *    POST: creates a new contact
+ */
+
+app.get("/events", function (req, res) {
+    db.collection(EVENTS_COLLECTION).find({}).toArray(function (err, docs) {
+        if (err) {
+            handleError(res, err.message, "Failed to get contacts.");
+        } else {
+            res.status(200).json(docs);
+        }
+    });
+});
+
+app.post("/events", function (req, res) {
+    var newContact = req.body;
+    newContact.createDate = new Date();
+
+    db.collection(EVENTS_COLLECTION).insertOne(newContact, function (err, doc) {
+        if (err) {
+            handleError(res, err.message, "Failed to create new contact.");
+        } else {
+            res.status(201).json(doc.ops[0]);
+        }
+    });
+});
+
+
+// Event Type Routes
+/*  "/contacts"
+ *    GET: finds all contacts
+ *    POST: creates a new contact
+ */
+
+app.get("/event_types", function (req, res) {
+    db.collection(EVENT_TYPES_COLLECTION).find({}).toArray(function (err, docs) {
+        if (err) {
+            handleError(res, err.message, "Failed to get contacts.");
+        } else {
+            res.status(200).json(docs);
+        }
+    });
+});
+
+app.post("/event_types", function (req, res) {
+    var newContact = req.body;
+    newContact.createDate = new Date();
+
+    db.collection(EVENT_TYPES_COLLECTION).insertOne(newContact, function (err, doc) {
+        if (err) {
+            handleError(res, err.message, "Failed to create new contact.");
+        } else {
+            res.status(201).json(doc.ops[0]);
+        }
+    });
+});
+
+app.delete("/event_types/:id", function (req, res) {
+    db.collection(EVENT_TYPES_COLLECTION).deleteOne({_id: new ObjectID(req.params.id)}, function (err, result) {
         if (err) {
             handleError(res, err.message, "Failed to delete contact");
         } else {

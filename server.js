@@ -8,7 +8,7 @@ var CONTACTS_COLLECTION = "contacts";
 var TEAMS_COLLECTION = "teams";
 var EVENTS_COLLECTION = "events";
 var EVENT_TYPES_COLLECTION = "event_types";
-var WEEK = 2;
+var WEEK = 3;
 
 var app = express();
 app.use(express.static(__dirname + "/public"));
@@ -209,6 +209,7 @@ app.get("/events", function (req, res) {
 app.post("/events", function (req, res) {
     var newContact = req.body;
     newContact.createDate = new Date();
+    newContact.week = WEEK;
 
     db.collection(EVENTS_COLLECTION).insertOne(newContact, function (err, doc) {
         if (err) {

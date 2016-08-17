@@ -190,7 +190,6 @@ angular.module("contactsApp", ['ngRoute'])
         $scope.events = events.data;
         $scope.teams = teams.data;
         $scope.showAllTeams = true;
-        $scope.last_week = 2;
         $scope.this_week = 3;
 
         $scope.playerToTeam = function () {
@@ -214,13 +213,13 @@ angular.module("contactsApp", ['ngRoute'])
                 var team_name = $scope.playerToTeamDict[event['contact']];
                 if (d[team_name] === undefined) {
                     d[team_name] = {};
-                    d[team_name]["last_week"] = 0;
+                    d[team_name]["this_week"] = 0;
                     d[team_name]["overall"] = 0;
                     d[team_name]["name"] = team_name;
                 }
                 var score = $scope.event_types[event["event_type"]]["points"];
-                if (event["week"] === $scope.last_week) {
-                    d[team_name]["last_week"] += score;
+                if (event["week"] === $scope.this_week) {
+                    d[team_name]["this_week"] += score;
                 }
                 d[team_name]["overall"] += score;
             }

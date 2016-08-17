@@ -289,3 +289,14 @@ app.post("/events", function (req, res) {
         }
     });
 });
+
+
+app.delete("/events/:id", function (req, res) {
+    db.collection(EVENTS_COLLECTION).deleteOne({_id: new ObjectID(req.params.id)}, function (err, result) {
+        if (err) {
+            handleError(res, err.message, "Failed to delete contact");
+        } else {
+            res.status(204).end();
+        }
+    });
+});

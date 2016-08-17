@@ -20,7 +20,7 @@
         </thead>
         <tbody ng-repeat="score_row in scores | orderBy:'-overall'">
             <td>{{ score_row.name }}</td>
-            <td>{{ score_row.last_week }}</td>
+            <td>{{ score_row.this_week }}</td>
             <td>{{ score_row.overall }}</td>
         </tbody>
     </table>
